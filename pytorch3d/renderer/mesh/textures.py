@@ -595,7 +595,7 @@ class TexturesAtlas(TexturesBase):
         # If barycentric coordinates are > 1.0 (in the case of
         # blur_radius > 0.0), wxy might be > R. We need to clamp this
         # index to R-1 to index into the texture atlas.
-        w_xy = (bary_w01 * R).to(torch.int64).clamp(max=R - 1)  # (N, H, W, K, 2)
+        w_xy = (bary_w01 * R).to(torch.int64).clamp(min=0, max=R - 1)  # (N, H, W, K, 2)
 
         below_diag = (
             bary_w01.sum(dim=-1) * R - w_xy.float().sum(dim=-1)
